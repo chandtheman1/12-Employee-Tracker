@@ -1,9 +1,10 @@
 const inquirer = require('inquirer');
 const query = require('./db/query');
+const inquire = require('./db/inquire');
 
 
 
-function employeeCMS() {
+async function employeeCMS() {
     inquirer
         .prompt([
             {
@@ -26,8 +27,8 @@ function employeeCMS() {
             // console.log(answers.options);
             switch (answers.options) {
                 case "View All Employees":
-                    query.viewAllEmployees();
-                    employeeCMS();
+                    console.log(query.returnAllDepartments());
+                    
                     break;
                 case "Add Employee":
                     console.log("Add Employee");
@@ -37,17 +38,18 @@ function employeeCMS() {
                     break;
                 case "View All Roles":
                     query.viewAllRoles();
-                    employeeCMS();
+
                     break;
                 case "Add Role":
-                    console.log("Add Role");
+                    inquire.addRole();
+
                     break;
                 case "View All Departments":
                     query.viewAllDepartments();
-                    employeeCMS();
+                    
                     break;
                 case "Add Department":
-                    console.log("Add Department");
+                    query.addDepartment();
                     break;
                 case "Quit":
                     break;
