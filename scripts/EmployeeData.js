@@ -87,8 +87,30 @@ class EmployeeData {
         });
     }
 
+    addDepartment(departmentName) {
+        query(`INSERT INTO department (name)
+        VALUES  (?);
+        `, departmentName, function () {
+            console.log(`${departmentName} has been added.`);
+        });
+    }
+
+    addRole(title, salary, departmentID) {
+        query(`INSERT INTO role (title, salary, department_id)
+        VALUES (?, ?, ?)`, [title, salary, departmentID], function () {
+            console.log(`${title} has been added.`)
+        })
+    }
+
+    addEmployee(firstName, lastName, roleID, managerID) {
+        query(`INSERT INTO employee (first_name, last_name, role_id, manager_id)
+        VALUES  (?, ?, ?, ?)`, [firstName, lastName, roleID, managerID], function () {
+            console.log(`${firstName} ${lastName} has been added.`);
+        });
+    }
 }
 
 const test = new EmployeeData();
 
-test.viewDepartmentBudget(1);
+test.addEmployee("Chandler", "Liang", 2, 1);
+test.viewAllEmployees();
