@@ -124,10 +124,18 @@ class EmployeeData {
             console.log(`Employee's manager has been updated.`);
         });
     }
+
+    deleteDepartment(departmentID) {
+        query(`DELETE
+        FROM department 
+        WHERE id = ?`, departmentID, function () {
+            console.log(`Department deleted.`);
+        });
+    }
+
+
 }
 
 const test = new EmployeeData();
 
-test.updateManager(4, 9);
-test.viewAllEmployees();
 
