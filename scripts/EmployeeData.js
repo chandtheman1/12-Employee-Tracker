@@ -108,9 +108,26 @@ class EmployeeData {
             console.log(`${firstName} ${lastName} has been added.`);
         });
     }
+
+    updateEmployee(roleID, employeeID) {
+        query(`UPDATE employee
+        SET role_id = ?
+        WHERE employee.id = ?`, [roleID, employeeID], function () {
+            console.log(`Employee's role has been updated.`);
+        });
+    }
+
+    updateManager(managerID, employeeID) {
+        query(`UPDATE employee
+        SET manager_id = ?
+        WHERE employee.id = ?`, [managerID, employeeID], function () {
+            console.log(`Employee's manager has been updated.`);
+        });
+    }
 }
 
 const test = new EmployeeData();
 
-test.addEmployee("Chandler", "Liang", 2, 1);
+test.updateManager(4, 9);
 test.viewAllEmployees();
+
