@@ -1,67 +1,53 @@
 const inquirer = require('inquirer');
-const query = require('./db/query');
-const inquire = require('./db/inquire');
+// const util = require('util');
+const cTable = require('console.table');
+// const query = require('./scripts/query');
+// const inquire = require('./scripts/inquire');
+const EmployeeData = require('./scripts/EmployeeData');
 
+const newEmployeeData = new EmployeeData;
 
-
-async function employeeCMS() {
-    inquirer
-        .prompt([
-            {
-                name: "options",
-                message: "What would you like to do?",
-                type: 'list',
-                choices: [
-                    "View All Employees",
-                    "Add Employee",
-                    "Update Employee Role",
-                    "View All Roles",
-                    "Add Role",
-                    "View All Departments",
-                    "Add Department",
-                    "Quit"
-                ]
-            }
-        ])
-        .then((answers) => {
-            // console.log(answers.options);
-            switch (answers.options) {
-                case "View All Employees":
-                    console.log(query.returnAllDepartments());
-                    
-                    break;
-                case "Add Employee":
-                    console.log("Add Employee");
-                    break;
-                case "Update Employee Role":
-                    console.log("Update Employee Role");
-                    break;
-                case "View All Roles":
-                    query.viewAllRoles();
-
-                    break;
-                case "Add Role":
-                    inquire.addRole();
-
-                    break;
-                case "View All Departments":
-                    query.viewAllDepartments();
-                    
-                    break;
-                case "Add Department":
-                    query.addDepartment();
-                    break;
-                case "Quit":
-                    break;
-            }
-        })
-        .catch((error) => {
-            console.error(error);
-        });
+async function actionPrompt() {
+    return inquirer.prompt([
+        {
+            name: "task",
+            message: "What would you like to do?",
+            type: 'list',
+            choices: [
+                "View All Employees",
+                "Add Employee",
+                "Update Employee Role",
+                "View All Roles",
+                "Add Role",
+                "View All Departments",
+                "Add Department",
+                "Quit"
+            ] 
+        }
+    ])
 }
 
-function init() {
-    employeeCMS();
+actionMethods = {
+    
+    
+    "View All Employees": newEmployeeData.viewAllEmployees
+         
+    
 }
+
+
+const init = async () => {
+    try {
+        
+        const actionChoice = await actionPrompt();
+      
+        await actionMethods[actionChoice.task]();
+
+        await init();
+    } catch (err) {
+        console.log(err);
+    }
+};
+
 
 init();

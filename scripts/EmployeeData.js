@@ -133,9 +133,25 @@ class EmployeeData {
         });
     }
 
+    deleteRole(roleID) {
+        query(`DELETE
+        FROM role 
+        WHERE id = ?`, roleID, function () {
+            console.log(`Role deleted.`);
+        });
+    }
+
+    deleteEmployee(employeeID) {
+        query(`DELETE
+        FROM employee 
+        WHERE id = ?`, employeeID, function () {
+            console.log(`Employee deleted.`);
+        });
+    }
 
 }
 
-const test = new EmployeeData();
+
+module.exports = EmployeeData;
 
 
