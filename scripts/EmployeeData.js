@@ -37,7 +37,7 @@ class EmployeeData {
     LEFT JOIN employee manager ON manager.id = employee.manager_id
     INNER JOIN role ON employee.role_id = role.id
     INNER JOIN department ON role.department_id = department.id`, function (err, results) {
-            console.table('\n', results);
+            console.table('\n', results, '\n');
         });
     }
     

@@ -15,8 +15,6 @@ const connection = mysql.createConnection(
 connection.connect(err => {
     if (err) {
         console.error(err);
-    } else {
-        console.log(`Connected to the cms_db database.`);
     }
 });
 

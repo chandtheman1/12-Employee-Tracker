@@ -15,6 +15,7 @@ async function actionPrompt() {
             type: 'list',
             choices: [
                 "View All Employees",
+                "View All Departments",
             ] 
         }
     ])
@@ -23,8 +24,8 @@ async function actionPrompt() {
 actionMethods = {
     
     
-    "View All Employees": newEmployeeData.viewAllEmployees
-         
+    "View All Employees": newEmployeeData.viewAllEmployees,
+    "View All Departments": newEmployeeData.viewAllDepartments,
     
 }
 
@@ -36,7 +37,7 @@ const init = async () => {
       
         await actionMethods[actionChoice.task]();
 
-        await init();
+        init();
     } catch (err) {
         console.log(err);
     }
