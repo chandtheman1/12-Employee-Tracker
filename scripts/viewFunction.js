@@ -6,8 +6,7 @@ const init = require('../index');
 const employee = new EmployeeData;
 
 function viewAllDepartments(init) {
-    employee.returnAllDepartments().then(console.table).then(init)
-    
+    employee.returnAllDepartments().then(console.table).then(init)    
 }
 
 
