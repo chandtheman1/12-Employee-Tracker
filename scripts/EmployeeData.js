@@ -1,6 +1,9 @@
 const connection = require('./connection');
+const inquirer = require('inquirer');
 const util = require('util');
 const cTable = require('console.table');
+// const init = require('../index.js');
+
 
 const query = util.promisify(connection.query).bind(connection);
 
@@ -10,22 +13,20 @@ class EmployeeData {
         this.query = query;
     }
 
-    viewAllDepartments() {
-        query('SELECT department.id AS ID, department.name AS DEPARTMENT FROM department', function (err, results) {
-            console.table('\n', results);
-        });
+    returnAllDepartments() {
+        return query('SELECT department.id AS ID, department.name AS DEPARTMENT FROM department');
     }
     
-    viewAllRoles() {
+    returnAllRoles() {
         query(`SELECT role.id, role.title, role.salary, department.name
         FROM role 
         JOIN department ON role.department_id = department.id
         ORDER BY role.id ASC`, function (err, results) {
-            console.table('\n', results);
+            return results;
         });
     }
 
-    viewAllEmployees() {
+    viewAllEmployees(init) {
         query(`SELECT  employee.id AS ID,
         employee.first_name AS "FIRST NAME",
         employee.last_name AS "LAST NAME",
@@ -38,10 +39,12 @@ class EmployeeData {
     INNER JOIN role ON employee.role_id = role.id
     INNER JOIN department ON role.department_id = department.id`, function (err, results) {
             console.table('\n', results, '\n');
+            init();
         });
     }
     
     viewThroughManager(managerID) {
+
         query(`SELECT  employee.id AS ID,
         employee.first_name AS "FIRST NAME",
         employee.last_name AS "LAST NAME",
@@ -59,7 +62,7 @@ class EmployeeData {
     
     }
 
-    viewThroughDepartment(departmentID) {
+    returnThroughDepartment(departmentID) {
         query(`SELECT  employee.id AS ID,
         employee.first_name AS "FIRST NAME",
         employee.last_name AS "LAST NAME",
@@ -73,7 +76,7 @@ class EmployeeData {
     INNER JOIN department ON role.department_id = department.id
     WHERE department.id = ?`, departmentID, function (err, results) {
         console.table('\n', results);
-        });
+    })
     }
 
     viewDepartmentBudget(departmentID) {

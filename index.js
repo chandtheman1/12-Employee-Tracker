@@ -3,9 +3,9 @@ const inquirer = require('inquirer');
 const cTable = require('console.table');
 // const query = require('./scripts/query');
 // const inquire = require('./scripts/inquire');
-const EmployeeData = require('./scripts/EmployeeData');
+const viewFunction = require('./scripts/viewFunction');
 
-const newEmployeeData = new EmployeeData;
+
 
 async function actionPrompt() {
     return inquirer.prompt([
@@ -14,8 +14,9 @@ async function actionPrompt() {
             message: "What would you like to do?",
             type: 'list',
             choices: [
-                "View All Employees",
                 "View All Departments",
+                "View Employees Through Department",
+
             ] 
         }
     ])
@@ -23,9 +24,8 @@ async function actionPrompt() {
 
 actionMethods = {
     
-    
-    "View All Employees": newEmployeeData.viewAllEmployees,
-    "View All Departments": newEmployeeData.viewAllDepartments,
+    "View All Departments": viewFunction.viewAllDepartments,
+    "View Employees Through Department": viewFunction.viewThroughDepartment,
     
 }
 
@@ -35,9 +35,8 @@ const init = async () => {
         
         const actionChoice = await actionPrompt();
       
-        await actionMethods[actionChoice.task]();
+        await actionMethods[actionChoice.task](init);
 
-        init();
     } catch (err) {
         console.log(err);
     }
@@ -45,3 +44,7 @@ const init = async () => {
 
 
 init();
+
+module.exports = {
+    init
+}
