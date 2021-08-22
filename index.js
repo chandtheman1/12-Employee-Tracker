@@ -32,6 +32,7 @@ async function actionPrompt() {
                 "View All Roles",
                 "View All Employees",
                 "Add A Department",
+                "Add A Role",
                 "View Employees Through Department",
 
             ] 
@@ -50,6 +51,9 @@ async function actionPrompt() {
                 break;
             case "Add A Department":
                 addADepartment();
+                break;
+            case "Add A Role":
+                addARole();
                 break;
             case "View Employees Through Department":
                 viewThroughDepartment();
@@ -110,6 +114,48 @@ function addADepartment() {
         VALUES  (?);
         `, department , function (err, result) {
             console.log('\n', `Department ${department} has been added.`, '\n');
+            actionPrompt();
+        });
+    })
+}
+
+async function addARole() {
+    let departments = await db.query('SELECT * FROM department');
+    inquirer.prompt([
+        {
+            name: "roleName",
+            message: "What is the name of the role?",
+            type: "input"
+        },
+        {
+            name: "salary",
+            message: "What is the salary of the role?",
+            type: "number"
+        },
+        {
+            name: "departmentName",
+            message: "Which department does the role belong to?",
+            type: "list",
+            choices: departments.map((department) => {
+                return {
+                    name: department.department_name,
+                    value: department.name
+                }
+            })
+        }
+    ])
+    .then((results) => {
+
+        let { roleName, salary } = results;
+        // corresponds the department string to its ID
+        let foundDepartmentID = departments.find(department => 
+            department.name === results.departmentName
+        ).id;
+
+      
+        db.query(`INSERT INTO role (title, salary, department_id)
+        VALUES (?, ?, ?)`, [roleName, salary, foundDepartmentID], function (err, results) {
+            console.log('\n', `${roleName} has been added.`, '\n');
             actionPrompt();
         });
     })
