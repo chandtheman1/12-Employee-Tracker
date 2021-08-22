@@ -5,12 +5,13 @@ const init = require('../index');
 
 const employee = new EmployeeData;
 
-function viewAllDepartments(init) {
-    employee.returnAllDepartments().then(console.table).then(init)    
+function viewAllDepartments() {
+    employee.returnAllDepartments().then(console.table)
+    init.actionPrompt();
 }
 
 
-async function viewThroughDepartment(init) {
+async function viewThroughDepartment() {
     
         const departments = await employee.returnAllDepartments();
         const inquire = inquirer.prompt([
@@ -34,9 +35,6 @@ async function viewThroughDepartment(init) {
         .then( function (result) {
             employee.returnThroughDepartment(result.departmentID)
         })
-
-        Promise.all([departments, inquire]).then(init)
-        
     
 }
 

@@ -1,24 +1,34 @@
-const connection = require('./connection');
+const db = require('./connection');
 const inquirer = require('inquirer');
 const util = require('util');
 const cTable = require('console.table');
 // const init = require('../index.js');
 
 
-const query = util.promisify(connection.query).bind(connection);
+// const query = util.promisify(connection.query).bind(connection);
+db.query = util.promisify(db.query);
 
+
+function test() {
+    let departments = db.query('SELECT department.id, department.name FROM department', function (err, results) {
+        return results
+    })
+    console.log(departments);
+}
+
+test();
 
 class EmployeeData {
     constructor(query) {
         this.query = query;
     }
 
-    returnAllDepartments() {
-        return query('SELECT department.id AS ID, department.name AS DEPARTMENT FROM department');
+    viewAllDepartments() {
+        console.log(db.query('SELECT department.id AS ID, department.name AS DEPARTMENT FROM department'));
     }
     
     returnAllRoles() {
-        query(`SELECT role.id, role.title, role.salary, department.name
+        db.query(`SELECT role.id, role.title, role.salary, department.name
         FROM role 
         JOIN department ON role.department_id = department.id
         ORDER BY role.id ASC`, function (err, results) {
